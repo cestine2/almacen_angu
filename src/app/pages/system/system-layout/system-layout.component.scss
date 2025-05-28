@@ -1,0 +1,25 @@
+:host ::ng-deep { // O sin :host si está en styles.scss global
+
+    .user-profile-menu-custom.p-menu-overlay {
+        // Estilos que quieres SIEMPRE (si los hay), o estilos base para desktop.
+        // Por ejemplo, un ancho mínimo podría ser global:
+        min-width: 180px;
+
+        // AHORA, LOS ESTILOS SOLO PARA MÓVIL (o pantallas más pequeñas que 'lg')
+        @media screen and (max-width: 991px) { // O el breakpoint que uses para 'lg'
+            right: 0 !important;
+            left: auto !important;
+            margin-top: -50px !important;// O el ajuste que te funcionó (ej. calc(100% + 2px) o con margin-top)
+
+            // Si necesitas otros ajustes específicos para móvil, van aquí.
+        }
+
+        // Si necesitas estilos específicos para DESKTOP que difieran del comportamiento
+        // por defecto de p-menu, los podrías poner en un @media (min-width: 992px)
+        // pero usualmente en desktop el posicionamiento por defecto de p-menu es bastante bueno.
+        // @media screen and (min-width: 992px) {
+        //     // Estilos solo para desktop (lg y mayores)
+        //     // Quizás aquí no necesitas 'right: 0' y dejas que PrimeNG decida.
+        // }
+    }
+}

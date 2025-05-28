@@ -1,0 +1,39 @@
+<p-dialog header="Editar Proveedor"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '500px', minWidth: '320px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid grid gap-y-4 px-1">
+
+      <div class="field col-12">
+        <label for="edit-prov-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
+        <input id="edit-prov-nombre" type="text" pInputText formControlName="nombre" class="w-full" autofocus>
+        <small *ngIf="proveedorForm.controls['nombre']?.touched && proveedorForm.controls['nombre']?.errors?.['required']" class="p-error block">Nombre es requerido.</small>
+        <small *ngIf="proveedorForm.controls['nombre']?.touched && proveedorForm.controls['nombre']?.errors?.['maxlength']" class="p-error block">Nombre no debe exceder 255 caracteres.</small>
+      </div>
+
+      <div class="field col-12">
+        <label for="edit-prov-direccion" class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+        <textarea id="edit-prov-direccion" pTextarea formControlName="direccion" rows="3" class="w-full"></textarea>
+        <small *ngIf="proveedorForm.controls['direccion']?.touched && proveedorForm.controls['direccion']?.errors?.['maxlength']" class="p-error block">Dirección no debe exceder 255 caracteres.</small>
+      </div>
+
+      <div class="field col-12">
+        <label for="edit-prov-telefono" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+        <input id="edit-prov-telefono" type="text" pInputText formControlName="telefono" class="w-full">
+        <small *ngIf="proveedorForm.controls['telefono']?.touched && proveedorForm.controls['telefono']?.errors?.['maxlength']" class="p-error block">Teléfono no debe exceder 50 caracteres.</small>
+      </div>
+    </div>
+
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+        <p-button label="Guardar" icon="pi pi-check" type="submit" styleClass="bg-indigo-600 hover:bg-indigo-700 text-white"></p-button>
+        </div>
+
+  </form>
+</p-dialog>

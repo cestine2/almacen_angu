@@ -1,0 +1,110 @@
+<p-toast></p-toast>
+<p-confirmDialog acceptLabel="Sí" rejectLabel="No"></p-confirmDialog>
+
+<!-- <div class="card"> -->
+  <p-toolbar styleClass="mb-6">
+    <ng-template pTemplate="start">
+      <!-- <p-button label="Registrar Inventario" icon="pi pi-plus" class="p-button-success mr-2" class="mr-2" (click)="openRegisterStockModal()"></p-button> -->
+      
+      </ng-template>
+
+      <ng-template pTemplate="end">
+      <p-button #btnInvFiltros
+                label="Filtros" icon="pi pi-filter"
+                severity="secondary"
+                (click)="toggleFilterPopover($event, btnInvFiltros.el.nativeElement)"></p-button>
+    </ng-template>
+
+  </p-toolbar>
+
+  <p-table
+    #dtInventarios
+    [value]="store.inventarios()"
+    [tableStyle]="{ 'min-width': '90rem' }"
+    [paginator]="true"
+    [rows]="store.perPage()"
+    [totalRecords]="store.totalItems()"
+    (onPage)="onPageChange($event)"
+    [showCurrentPageReport]="true"
+    responsiveLayout="scroll"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+    [globalFilterFields]="['id', 'tipo', 'item.nombre', 'sucursal.nombre', 'usuario.name', 'stock_actual']"
+    [lazy]="true"
+    styleClass="p-datatable-customers p-datatable-gridlines">
+
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <p class="font-bold font-mono text-2xl py-1" >INVENTARIO</p>
+        <!-- <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input #gbInvInput pInputText type="text" [(ngModel)]="globalTableFilterValue"
+                   (input)="onGlobalTableFilter(dtInventarios, $event)" placeholder="Buscar en tabla..."
+                   class="w-full sm:w-auto"/>
+            <button *ngIf="globalTableFilterValue" pButton icon="pi pi-times"
+                    class="p-button-text p-button-rounded ml-1" (click)="clearGlobalTableFilter(dtInventarios, gbInvInput)"
+                    pTooltip="Limpiar búsqueda" tooltipPosition="top"></button>
+        </span> -->
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5%; min-width: 4rem;" pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="tipo" style="min-width:10rem">Tipo <p-sortIcon field="tipo"></p-sortIcon></th>
+        <th pSortableColumn="item.nombre" style="min-width:15rem">Ítem (Material/Producto) <p-sortIcon field="item.nombre"></p-sortIcon></th>
+        <th pSortableColumn="sucursal.nombre" style="min-width:12rem">Sucursal <p-sortIcon field="sucursal.nombre"></p-sortIcon></th>
+        <th pSortableColumn="stock_actual" style="min-width:10rem; text-align: right;">Stock Actual <p-sortIcon field="stock_actual"></p-sortIcon></th>
+        <th pSortableColumn="usuario.nombre" style="min-width:12rem">Usuario (Últ. Mod.) <p-sortIcon field="usuario.name"></p-sortIcon></th>
+        <!-- <th style="min-width:8rem" pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th> -->
+        <!-- <th style="width:10rem; text-align: center;">Acciones</th> -->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-inventario>
+      <tr>
+        <td>{{ inventario.id }}</td>
+        <td>{{ inventario.tipo | titlecase }}</td>
+        <td>{{ getItemName(inventario) }}</td> <td>{{ inventario.sucursal?.nombre || 'N/A' }}</td>
+        <td style="text-align: right;">{{ inventario.stock_actual | number }}</td>
+        <td>{{ inventario.usuario?.nombre || 'N/A' }}</td>
+        <!-- <td>
+          <p-tag [value]="getTextForEstado(inventario.estado)" [severity]="getSeverityForEstado(inventario.estado)"></p-tag>
+        </td> -->
+        <!-- <td style="text-align: center;">
+          <div class="flex gap-2 justify-content-center">
+            <button pButton pRipple icon="pi pi-pencil"
+                    class="p-button-rounded p-button-info p-button-outlined"
+                    (click)="openEditStockModal(inventario)"
+                    pTooltip="Editar Stock" tooltipPosition="top"></button>
+            <ng-container *ngIf="inventario.estado; else restoreButtonInv">
+              <button pButton pRipple icon="pi pi-times-circle"
+                      class="p-button-rounded p-button-danger p-button-outlined"
+                      (click)="confirmDeleteOrRestore(inventario)"
+                      pTooltip="Desactivar Registro" tooltipPosition="top"></button>
+            </ng-container>
+            <ng-template #restoreButtonInv>
+              <button pButton pRipple icon="pi pi-history"
+                      class="p-button-rounded p-button-warning p-button-outlined"
+                      (click)="confirmDeleteOrRestore(inventario)"
+                      pTooltip="Restaurar Registro" tooltipPosition="top"></button>
+            </ng-template>
+          </div>
+        </td> -->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" class="text-center">No se encontraron registros de inventario.</td> </tr>
+    </ng-template>
+    <ng-template pTemplate="loadingbody">
+        <tr>
+            <td colspan="8" class="text-center">Cargando inventario...</td> </tr>
+    </ng-template>
+  </p-table>
+<!-- </div> -->
+<!-- <app-create />
+<app-edit /> -->
+<app-filtro />

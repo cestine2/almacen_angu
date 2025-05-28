@@ -1,0 +1,92 @@
+<!-- toolbar -->
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <!-- <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" /> -->
+        <!-- <p-button label="Nuevo" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" /> -->
+        <p-button label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2" class="mr-2"  (onClick)="onOpenModalCreate()" />
+        <!-- <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined /> -->
+    </ng-template>
+
+    
+</p-toolbar>
+
+  <!-- tabla -->
+
+<p-table
+            #dt
+            [value]="colorStore.colors()"
+            [rows]="20"
+            [paginator]="true"
+            [globalFilterFields]="['nombre']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} colores"
+            [showCurrentPageReport]="true"
+            
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <p class="font-bold font-mono text-2xl py-1" >COLORES</p>
+                    <p-iconfield>
+                        <p-inputicon styleClass="pi pi-search" />
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." />
+                    </p-iconfield>
+                </div>
+            </ng-template>
+
+            <ng-template #header>
+                <tr>
+                    <th style="width: 5%; min-width: 4rem;" pSortableColumn="id">ID <p-sortIcon field="id" />
+                    </th>
+
+                    <th style="min-width:10rem">
+                        Nombre <p-sortIcon field="name" />
+                    </th>
+                    <th style="min-width:10rem">
+                        Estado <p-sortIcon field="status" />
+                    </th>
+                    <th>Acciones</th>
+
+                </tr>
+            </ng-template>
+
+            <ng-template #body let-color> <!-- Cambiado de product a color -->
+                <tr>
+                    
+                    <td>{{ color.id }}</td>
+                    <td>{{ color.nombre }}</td>
+                    <td>
+                        <p-tag [value]="color.estado ? 'Activo' : 'Inactivo'"
+                        [severity]="getSeverity(color.estado)">
+
+                        </p-tag>
+
+                    </td>
+
+                    <td>
+                       <div class="flex gap-2">
+                        <p-button
+                            icon="pi pi-pencil"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (onClick)="editProduct(color)" pTooltip="Editar" tooltipPosition="top" />
+
+                            @if (color.estado) {
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                                (click)="confirmDelete(color.id)" pTooltip="Desactivar" tooltipPosition="top"/>
+                            } @else {
+                                <p-button icon="pi pi-history" severity="warn" [rounded]="true" [outlined]="true"
+                                    (click)="colorStore.doRestore(color.id)" pTooltip="Activar" tooltipPosition="top"/>
+                            }
+                        </div> 
+                    </td>
+                </tr>
+            </ng-template>
+</p-table>
+        <!-- <app-create [(visible)]="isCreateDialogVisible"></app-create> -->
+        <app-create />
+        <app-edit />
+        <p-confirmDialog
+        acceptLabel="Si"
+        ></p-confirmDialog>

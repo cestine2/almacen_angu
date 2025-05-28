@@ -1,0 +1,60 @@
+<!-- <p-dialog header="Editar Registro de Stock"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '550px', minWidth: '320px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <form [formGroup]="stockForm" (ngSubmit)="onSubmit()" *ngIf="inventarioStore.inventarioEdit() as inventarioEdit">
+    <div class="p-fluid grid gap-x-4 gap-y-3 px-1">
+
+      <div class="field col-12">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Ítem</label>
+        <input type="text" pInputText [value]="displayItemType | titlecase" class="w-full" [disabled]="true">
+      </div>
+
+      <div class="field col-12">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Ítem</label>
+        <input type="text" pInputText [value]="displayItemName" class="w-full" [disabled]="true">
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="edit-stock-sucursal" class="block text-sm font-medium">Sucursal <span class="text-red-500">*</span></label>
+        <p-dropdown id="edit-stock-sucursal"
+                    [options]="sucursalStore.sucursales()"
+                    formControlName="sucursal_id"
+                    placeholder="Seleccionar sucursal..."
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay sucursales.</ng-template>
+        </p-dropdown>
+        <small *ngIf="stockForm.controls['sucursal_id']?.touched && stockForm.controls['sucursal_id']?.errors?.['required']" class="p-error block">Sucursal es requerida.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="edit-stock-cantidad" class="block text-sm font-medium">Stock Actual <span class="text-red-500">*</span></label>
+        <p-inputNumber id="edit-stock-cantidad" formControlName="stock_actual"
+                       mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="0" [min]="0"
+                       placeholder="Ingrese stock" class="w-full" autofocus>
+        </p-inputNumber>
+        <small *ngIf="stockForm.controls['stock_actual']?.touched && stockForm.controls['stock_actual']?.errors?.['required']" class="p-error block">Stock es requerido.</small>
+        <small *ngIf="stockForm.controls['stock_actual']?.touched && stockForm.controls['stock_actual']?.errors?.['min']" class="p-error block">Stock no puede ser negativo.</small>
+      </div>
+
+    </div>
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text" (click)="hideDialog()"></p-button>
+        <p-button label="Guardar Cambios" icon="pi pi-save" type="submit" styleClass="p-button-success"></p-button>
+      </div>
+  </form>
+  <ng-template #noInventario>
+      <p class="p-4 text-center">No hay un registro de inventario seleccionado para editar.</p>
+  </ng-template>
+</p-dialog> -->

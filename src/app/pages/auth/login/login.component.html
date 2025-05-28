@@ -1,0 +1,123 @@
+<div class="min-h-screen flex">
+  <!-- Sección de imagen (izquierda) -->
+  <div class="hidden lg:flex lg:w-6/12 relative items-center justify-center overflow-hidden"
+    style="background-image: url('/tienda.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+    </div>
+
+  <!-- Sección de formulario (derecha) -->
+  <div class="w-full lg:w-6/12 flex items-center justify-center bg-surface-0 dark:bg-surface-900 p-4 lg:p-8">
+    <div class="flex flex-col items-center w-full max-w-md">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mb-4">
+          <i class="pi pi-lock text-emerald-600 dark:text-emerald-400 text-2xl"></i>
+        </div>
+        <h1 class="text-surface-900 dark:text-surface-0 text-3xl font-bold mb-2">Bienvenido</h1>
+        <p class="text-surface-600 dark:text-surface-400 text-sm">Complete los campos para Ingresar</p>
+      </div>
+
+      <form [formGroup]="frmLogin" (ngSubmit)="onSubmit()" class="w-full">
+        <!-- Grupo de email con margen inferior ajustado -->
+        <div class="mb-4">
+          <label for="password" class="block text-base font-semibold tracking-wide text-surface-900 dark:text-surface-0 mb-1">
+            Correo
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="pi pi-envelope text-surface-400"></i>
+            </div>
+            <input
+              pInputText
+              id="email"
+              formControlName="email"
+              type="email"
+              placeholder="Ingrese su correo"
+              class="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-300 dark:border-surface-700 bg-surface-0 dark:bg-surface-800 text-surface-900 dark:text-surface-0 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            />
+          </div>
+          <!-- Espacio reservado para mensajes de error -->
+          <div class="h-4 mt-1">
+            @if (frmLogin.get('email')?.invalid && (frmLogin.get('email')?.dirty || frmLogin.get('email')?.touched)) {
+              <p class="text-red-500 text-sm">
+                @if (frmLogin.get('email')?.errors?.['required']) {
+                  <span>Correo es requerido.</span>
+                }
+                @if (frmLogin.get('email')?.errors?.['email']) {
+                  <span>Formato de correo inválido.</span>
+                }
+              </p>
+            }
+          </div>
+        </div>
+
+        <!-- Grupo de contraseña con margen inferior ajustado -->
+        <div class="mb-4">
+          <label for="password" class="block text-base font-semibold tracking-wide text-surface-900 dark:text-surface-0 mb-1">
+            Contraseña
+          </label>
+          <div class="relative w-full">
+            <!-- Icono de candado a la izquierda -->
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="pi pi-lock text-surface-400"></i>
+            </div>
+
+            <!-- Input de contraseña -->
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Ingrese su contraseña"
+              class="w-full pl-10 pr-10 py-3 rounded-lg border border-surface-300 dark:border-surface-700 bg-surface-0 dark:bg-surface-800 text-surface-900 dark:text-surface-0 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            />
+
+            <!-- Botón mostrar/ocultar contraseña -->
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-surface-400"
+              (click)="showPassword = !showPassword"
+              tabindex="-1"
+            >
+              <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            </button>
+          </div>
+
+  <!-- Mensaje de error -->
+      <div class="h-4 mt-1">
+        @if (frmLogin.get('password')?.invalid && (frmLogin.get('password')?.dirty || frmLogin.get('password')?.touched)) {
+          <p class="text-red-500 text-sm">
+            @if (frmLogin.get('password')?.errors?.['required']) {
+              <span>La contraseña es requerida.</span>
+            }
+            @if (frmLogin.get('password')?.errors?.['minlength']) {
+              <span>La contraseña debe tener al menos {{ frmLogin.get('password')?.errors?.['minlength']?.requiredLength }} caracteres.</span>
+            }
+          </p>
+        }
+      </div>
+  </div>
+
+        <!-- Botón con margen superior ajustado -->
+        <div class="mt-4">
+          <p-button
+            label="Iniciar Sesión"
+            styleClass="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-md"
+            type="submit"
+            [disabled]="isLoading()"
+          ></p-button>
+        </div>
+
+        <div class="text-center mt-6">
+          <a href="#" class="text-emerald-600 dark:text-emerald-400 text-sm font-medium hover:underline">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <!-- @if (errorMessage()) {
+          <div class="text-red-500 text-sm text-center mt-4">
+            {{ errorMessage() }}
+          </div>
+        } -->
+      </form>
+    </div>
+  </div>
+
+</div>

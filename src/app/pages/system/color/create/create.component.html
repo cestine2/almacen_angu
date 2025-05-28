@@ -1,0 +1,29 @@
+<p-dialog 
+  [(visible)]="visible" 
+  header="Nuevo Color" 
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  (onHide)="onHide()"
+>    <!-- <ng-template #content> -->
+    <form [formGroup]="colorForm" (ngSubmit)="onSubmit()">
+        <!-- <ng-template pTemplate="content"> -->
+            <div class="flex flex-col gap-12">
+                
+                <div>
+                    <label for="name" class="block font-bold mb-3">Nombre <span class="text-red-500">*</span></label>
+                    <input type="text" pInputText id="nombre"  formControlName="nombre" autofocus fluid />
+                    <!-- <small class="text-red-500">Nombre es requerido.</small> -->
+                </div>
+                
+            </div>
+        <!-- </ng-template> -->
+        <!-- <ng-template pTemplate="footer"> -->
+        <div class="mt-4 flex justify-end gap-2">
+            <p-button label="Cancelar" icon="pi pi-times" text (click)="onHide()" />
+            <p-button label="Guardar" icon="pi pi-check" type="submit"/>
+        </div>
+            
+        <!-- </ng-template> -->
+    </form>
+</p-dialog>
+    

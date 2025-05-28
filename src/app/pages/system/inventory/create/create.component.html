@@ -1,0 +1,99 @@
+<!-- <p-dialog header="Registrar Inventario"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '600px', minWidth: '320px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid grid gap-x-4 gap-y-3 px-1">
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-stock-tipo" class="block text-sm font-medium">Tipo de Ítem <span class="text-red-500">*</span></label>
+        <p-dropdown id="reg-stock-tipo"
+                    [options]="tipoItemOptions"
+                    formControlName="tipo"
+                    placeholder="Seleccionar tipo..."
+                    optionLabel="label"
+                    optionValue="value"
+                    appendTo="body" styleClass="w-full">
+        </p-dropdown>
+        <small *ngIf="stockForm.controls['tipo']?.touched && stockForm.controls['tipo']?.errors?.['required']" class="p-error block">Tipo es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-stock-item" class="block text-sm font-medium">
+          {{ stockForm.get('tipo')?.value === 'Material' ? 'Material' : (stockForm.get('tipo')?.value === 'Producto' ? 'Producto' : 'Ítem') }}
+          <span class="text-red-500">*</span>
+        </label>
+        <p-dropdown id="reg-stock-item"
+                    *ngIf="stockForm.get('tipo')?.value === 'Material'"
+                    [options]="materialStore.materiales()" formControlName="item_id"
+                    placeholder="Seleccionar material..."
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onItemFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay materiales.</ng-template>
+        </p-dropdown>
+
+        <p-dropdown id="reg-stock-item-prod"
+                    *ngIf="stockForm.get('tipo')?.value === 'Producto'"
+                    [options]="productStore.products()" formControlName="item_id"
+                    placeholder="Seleccionar producto..."
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onItemFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+           <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+           <ng-template pTemplate="empty">Buscar o no hay productos.</ng-template>
+        </p-dropdown>
+        <small *ngIf="!stockForm.get('tipo')?.value && stockForm.controls['item_id']?.touched" class="p-error block">Seleccione un tipo primero.</small>
+        <small *ngIf="stockForm.get('tipo')?.value && stockForm.controls['item_id']?.touched && stockForm.controls['item_id']?.errors?.['required']" class="p-error block">Ítem es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-stock-sucursal" class="block text-sm font-medium">Sucursal <span class="text-red-500">*</span></label>
+        <p-dropdown id="reg-stock-sucursal"
+                    [options]="sucursalStore.sucursales()"
+                    formControlName="sucursal_id"
+                    placeholder="Seleccionar sucursal..."
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay sucursales.</ng-template>
+        </p-dropdown>
+        <small *ngIf="stockForm.controls['sucursal_id']?.touched && stockForm.controls['sucursal_id']?.errors?.['required']" class="p-error block">Sucursal es requerida.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-stock-cantidad" class="block text-sm font-medium">Cantidad a Registrar <span class="text-red-500">*</span></label>
+        <p-inputNumber id="reg-stock-cantidad" formControlName="stock_actual"
+                       mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="0" [min]="1"
+                       placeholder="Ingrese cantidad" class="w-full">
+        </p-inputNumber>
+        <small *ngIf="stockForm.controls['stock_actual']?.touched && stockForm.controls['stock_actual']?.errors?.['required']" class="p-error block">Cantidad es requerida.</small>
+        <small *ngIf="stockForm.controls['stock_actual']?.touched && stockForm.controls['stock_actual']?.errors?.['min']" class="p-error block">Cantidad debe ser al menos 1.</small>
+      </div>
+
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text" (click)="hideDialog()"></p-button>
+        <p-button label="Registrar Stock" icon="pi pi-save" type="submit" styleClass="p-button-success"></p-button>
+      </div>
+  </form>
+</p-dialog> -->

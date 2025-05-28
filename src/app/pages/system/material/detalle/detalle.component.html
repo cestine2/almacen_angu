@@ -1,0 +1,64 @@
+<p-dialog header="Detalles del Material"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '500px', minWidth: '320px'}"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <ng-container *ngIf="materialActual as material">
+    <div class="p-fluid grid gap-y-3 px-1">
+
+      <div class="field col-12">
+        <label for="detalle-cat-id" class="block text-sm font-medium text-gray-700 mb-1">ID</label>
+        <input id="detalle-cat-id" type="text" pInputText [ngModel]="material.id" class="w-full" [disabled]="true">
+      </div>
+
+      <div class="field col-12">
+        <label for="detalle-cat-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <input id="detalle-cat-nombre" type="text" pInputText [ngModel]="material.cod_articulo" class="w-full" [disabled]="true">
+      </div>
+
+      <div class="field col-12">
+        <label for="detalle-cat-descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <textarea id="detalle-cat-descripcion" pTextarea [ngModel]="material.nombre" rows="3" class="w-full" [disabled]="true"></textarea>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <div>
+            <!-- <p-tag [value]="material.tipo | titlecase" [severity]="getTipoTagSeverity(categoria.tipo)" styleClass="text-sm"></p-tag> -->
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+        <div>
+            <p-tag [value]="material.estado ? 'Activo' : 'Inactivo'" [severity]="getEstadoTagSeverity(material.estado)" styleClass="text-sm"></p-tag>
+        </div>
+      </div>
+
+      <!--
+      <div class="field col-12 md:col-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+        <div class="flex align-items-center mt-1">
+          <p-checkbox [ngModel]="categoria.estado" [binary]="true" inputId="detalle-cat-estado-cb" [disabled]="true"></p-checkbox>
+          <label for="detalle-cat-estado-cb" class="ml-2">{{ categoria.estado ? 'Activo' : 'Inactivo' }}</label>
+        </div>
+      </div>
+      -->
+
+    </div>
+  </ng-container>
+
+  <!-- <ng-template pTemplate="footer"> -->
+    <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+      <p-button label="Cerrar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+    </div>
+  <!-- </ng-template> -->
+
+  <ng-template [ngIf]="!materialActual">
+    <p class="p-4 text-center">No hay información de categoría para mostrar.</p>
+  </ng-template>
+
+</p-dialog>

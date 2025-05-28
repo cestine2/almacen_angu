@@ -1,0 +1,120 @@
+<p-dialog header="Registrar Nuevo Movimiento de Inventario"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '700px', minWidth: '400px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '85vh'}">
+
+  <form [formGroup]="movimientoForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid grid gap-x-4 gap-y-3 px-1">
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-mov-motivo" class="block text-sm font-medium">Motivo <span class="text-red-500">*</span></label>
+        <p-dropdown id="reg-mov-motivo"
+                    [options]="motivoOptions"
+                    formControlName="motivo"
+                    placeholder="Seleccionar motivo..."
+                    optionLabel="label"
+                    optionValue="value"
+                    appendTo="body" styleClass="w-full">
+        </p-dropdown>
+        <small *ngIf="movimientoForm.controls['motivo']?.touched && movimientoForm.controls['motivo']?.errors?.['required']" class="p-error block">Motivo es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-mov-tipo" class="block text-sm font-medium">Tipo de Ítem <span class="text-red-500">*</span></label>
+        <p-dropdown id="reg-mov-tipo"
+                    [options]="tipoItemOptions"
+                    formControlName="tipo"
+                    placeholder="Seleccionar tipo..."
+                    optionLabel="label"
+                    optionValue="value"
+                    appendTo="body" styleClass="w-full">
+        </p-dropdown>
+        <small *ngIf="movimientoForm.controls['tipo']?.touched && movimientoForm.controls['tipo']?.errors?.['required']" class="p-error block">Tipo es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-mov-item" class="block text-sm font-medium">
+          {{ movimientoForm.get('tipo')?.value === 'Material' ? 'Material' : (movimientoForm.get('tipo')?.value === 'Producto' ? 'Producto' : 'Ítem') }}
+          <span class="text-red-500">*</span>
+        </label>
+        <ng-container [ngSwitch]="movimientoForm.get('tipo')?.value">
+          <p-dropdown *ngSwitchCase="'Material'"
+                      id="reg-mov-item-material"
+                      [options]="materialStore.materiales()"
+                      formControlName="item_id"
+                      placeholder="Seleccionar material..."
+                      optionLabel="nombre" optionValue="id"
+                      [filter]="true" filterBy="nombre" (onFilter)="onItemFilter($event)"
+                      [showClear]="true" appendTo="body" styleClass="w-full" scrollHeight="180px">
+            <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+            <ng-template pTemplate="empty">Buscar o no hay materiales.</ng-template>
+          </p-dropdown>
+          <p-dropdown *ngSwitchCase="'Producto'"
+                      id="reg-mov-item-producto"
+                      [options]="productStore.products()"
+                      formControlName="item_id"
+                      placeholder="Seleccionar producto..."
+                      optionLabel="nombre" optionValue="id"
+                      [filter]="true" filterBy="nombre" (onFilter)="onItemFilter($event)"
+                      [showClear]="true" appendTo="body" styleClass="w-full" scrollHeight="180px">
+            <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+            <ng-template pTemplate="empty">Buscar o no hay productos.</ng-template>
+          </p-dropdown>
+        </ng-container>
+        <small *ngIf="!movimientoForm.get('tipo')?.value && movimientoForm.controls['item_id']?.touched" class="p-error block">Seleccione un tipo primero.</small>
+        <small *ngIf="movimientoForm.get('tipo')?.value && movimientoForm.controls['item_id']?.touched && movimientoForm.controls['item_id']?.errors?.['required']" class="p-error block">Ítem es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-mov-cantidad" class="block text-sm font-medium">Cantidad <span class="text-red-500">*</span></label>
+        <p-inputNumber id="reg-mov-cantidad" formControlName="cantidad"
+                       mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="0"
+                       [min]="(movimientoForm.get('motivo')?.value === 'ajuste' && movimientoForm.get('cantidad')?.value !== null && movimientoForm.get('cantidad')?.value < 0) ? undefined : 1" 
+                       placeholder="Ingrese cantidad" class="w-full">
+                       </p-inputNumber>
+        <small *ngIf="movimientoForm.controls['cantidad']?.touched && movimientoForm.controls['cantidad']?.errors?.['required']" class="p-error block">Cantidad requerida.</small>
+        <small *ngIf="movimientoForm.controls['cantidad']?.touched && movimientoForm.controls['cantidad']?.errors?.['min']" class="p-error block">Cantidad debe ser al menos 1 (para entradas/salidas).</small>
+      </div>
+
+      <div class="field col-12 md:col-6" *ngIf="movimientoForm.get('tipo')?.value === 'Producto'">
+        <label for="reg-mov-precio" class="block text-sm font-medium">Precio Unitario <span class="text-red-500">*</span></label>
+        <p-inputNumber id="reg-mov-precio" formControlName="precio_unitario"
+                       mode="currency" currency="PEN" locale="es-PE"
+                       [minFractionDigits]="2" [maxFractionDigits]="5" [min]="0"
+                       placeholder="Ingrese precio" class="w-full">
+        </p-inputNumber>
+        <small *ngIf="movimientoForm.controls['precio_unitario']?.touched && movimientoForm.controls['precio_unitario']?.errors?.['required']" class="p-error block">Precio requerido para Productos.</small>
+        <small *ngIf="movimientoForm.controls['precio_unitario']?.touched && movimientoForm.controls['precio_unitario']?.errors?.['min']" class="p-error block">Precio no puede ser negativo.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="reg-mov-sucursal" class="block text-sm font-medium">Sucursal <span class="text-red-500">*</span></label>
+        <p-dropdown id="reg-mov-sucursal"
+                    [options]="sucursalStore.sucursales()"
+                    formControlName="sucursal_id"
+                    placeholder="Seleccionar sucursal..."
+                    optionLabel="nombre" optionValue="id"
+                    [filter]="true" filterBy="nombre" [showClear]="true"
+                    appendTo="body" styleClass="w-full" scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay sucursales.</ng-template>
+        </p-dropdown>
+        <small *ngIf="movimientoForm.controls['sucursal_id']?.touched && movimientoForm.controls['sucursal_id']?.errors?.['required']" class="p-error block">Sucursal requerida.</small>
+      </div>
+
+      <!-- <div class="field col-12">
+        <label for="reg-mov-descripcion" class="block text-sm font-medium">Descripción (Opcional)</label>
+        <textarea id="reg-mov-descripcion" pInputTextarea formControlName="descripcion" rows="2" class="w-full"></textarea>
+      </div> -->
+
+    </div>
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text" (click)="hideDialog()"></p-button>
+        <p-button label="Registrar Movimiento" icon="pi pi-save" type="submit" styleClass="p-button-success" [disabled]="movimientoForm.invalid"></p-button>
+      </div>
+  </form>
+</p-dialog>

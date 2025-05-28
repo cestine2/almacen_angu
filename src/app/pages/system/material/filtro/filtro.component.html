@@ -1,0 +1,82 @@
+<p-popover #popFiltrosMaterial
+           [dismissable]="true"
+           appendTo="body"
+           [style]="{width: '400px'}" styleClass="material-filters-popover">
+
+  <div class="p-4">
+    <div class="flex justify-content-between align-items-center mb-3">
+        <h3 class="text-xl font-semibold m-0">Filtrar Materiales</h3>
+        <button pButton type="button" icon="pi pi-times"
+                class="p-button-text p-button-rounded p-button-plain"
+                (click)="hide()"></button>
+    </div>
+
+    <div class="p-fluid grid gap-y-3">
+
+      <div class="field col-12">
+        <label for="popoverFilterMatNombre" class="block text-sm font-medium">Nombre Material</label>
+        <input id="popoverFilterMatNombre" type="text" pInputText [(ngModel)]="localFilters.nombre" placeholder="Buscar por nombre" class="w-full">
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMatCodArticulo" class="block text-sm font-medium">Cód. Artículo</label>
+        <input id="popoverFilterMatCodArticulo" type="text" pInputText [(ngModel)]="localFilters.cod_articulo" placeholder="Buscar por código" class="w-full">
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMatStatus" class="block text-sm font-medium">Estado</label>
+        <p-dropdown id="popoverFilterMatStatus"
+                    [options]="statusOptions"
+                    [(ngModel)]="localFilters.status"
+                    placeholder="Seleccionar estado"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true" 
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMatCategoria" class="block text-sm font-medium">Categoría (Material)</label>
+        <p-dropdown id="popoverFilterMatCategoria"
+                    [options]="categoriaStore.categoriasDropdownOptions()"
+                    [(ngModel)]="localFilters.categoria_id"
+                    placeholder="Seleccionar categoría"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true"
+                    (onFilter)="onCategoriaFilterInPanel($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="200px"
+                    [panelStyleClass]="'w-full min-w-fit'">
+          <ng-template pTemplate="emptyfilter">No hay categorías con "{{lastCategoriaSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Escriba para buscar o no hay categorías.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMatProveedor" class="block text-sm font-medium">Proveedor</label>
+        <p-dropdown id="popoverFilterMatProveedor"
+                    [options]="proveedorStore.proveedores()"
+                    [(ngModel)]="localFilters.proveedor_id"
+                    placeholder="Seleccionar proveedor"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre" [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="200px">
+                    <ng-template pTemplate="emptyfilter">No hay proveedores con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay proveedores.</ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-2 pt-4 mt-4 border-t">
+      <p-button label="Limpiar" icon="pi pi-filter-slash" styleClass="p-button-text p-button-sm" (click)="clearFiltersAndApply()"></p-button>
+      <p-button label="Aplicar" icon="pi pi-check" styleClass="p-button-sm" (click)="applyFilters()"></p-button>
+    </div>
+  </div>
+</p-popover>

@@ -1,0 +1,30 @@
+<p-dialog header="Editar Sucursal"
+          [(visible)]="visible"
+          (onHide)="onHide()"
+          [modal]="true"
+          [style]="{ width: '450px' }"
+          [draggable]="false"
+          [resizable]="false">
+
+    <form [formGroup]="sucursalForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col gap-3">
+            <div class="col-12 field mb-3">
+                <label for="nombre" class="block font-bold mb-2">Nombre</label>
+                <input id="nombre" type="text" pInputText formControlName="nombre" autofocus fluid />
+            </div>
+
+            <div class="col-12 field mb-3">
+                <label for="direccion" class="block font-bold mb-2">Dirección</label>
+                <textarea id="direccion" pInputTextarea formControlName="direccion" rows="3" class="w-full border rounded-md focus:outline-none focus:border-[#10b981] py-2 px-3"></textarea>
+            </div>
+
+        </div>
+        <div class="mt-4 flex justify-end gap-2">
+            <p-button label="Cancelar" icon="pi pi-times" (click)="onHide()" [text]="true"></p-button>
+            <p-button label="Guardar" icon="pi pi-check" type="submit" severity="success" ></p-button>
+        </div>
+
+         
+    </form>
+
+</p-dialog>

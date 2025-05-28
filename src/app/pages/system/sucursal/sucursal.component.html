@@ -1,0 +1,74 @@
+   
+    <p-toolbar styleClass="mb-6">
+      <ng-template pTemplate="start">
+        <p-button label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2" class="mr-2"  (onClick)="onOpenModalCreate()"></p-button>
+      </ng-template>
+      
+   
+    </p-toolbar>
+    
+    <p-table
+        #dt
+        [value]="sucursalStore.sucursales()"
+        [rows]="20"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true"
+        [globalFilterFields]="['nombre']"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        [rowHover]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} sucursales" 
+        >
+        <ng-template #caption>
+            <div class="flex items-center justify-between">
+                <p class="font-bold font-mono text-2xl py-1" >SUCURSALES</p>
+                <!-- <p-iconfield>
+                    <p-inputicon styleClass="pi pi-search" />
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." />
+                </p-iconfield> -->
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5%" pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th style="min-width: 12rem;" pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th style="min-width: 15rem;" pSortableColumn="direccion">Dirección <p-sortIcon field="direccion"></p-sortIcon></th>
+        <th style="min-width: 7rem;" pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+        <th style="min-width: 10rem;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-branch>
+      <tr>
+        <td>{{branch.id}}</td>
+        <td>{{branch.nombre}}</td>
+        <td>{{branch.direccion}}</td>
+        <td>
+            <p-tag [value]="branch.estado ? 'Activo' : 'Inactivo'"
+                   [severity]="getSeverity(branch.estado)"></p-tag>
+        </td>
+        <td style="text-align: center;"> <div class="flex gap-2 justify-content-center">
+          <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)= "editBranch(branch)" pTooltip="Editar" tooltipPosition="top"></p-button>
+                <ng-container *ngIf="branch.estado; else restoreButton">
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteBranch(branch.id)" pTooltip="Desactivar" tooltipPosition="top"></p-button>
+                </ng-container>
+                <ng-template #restoreButton>
+                    <p-button icon="pi pi-history" severity="warn" [rounded]="true" [outlined]="true"
+                              (click)="sucursalStore.doRestore(branch.id)" pTooltip="Activar" tooltipPosition="top"></p-button>
+                </ng-template>
+            </div>
+        </td>
+      </tr>
+    </ng-template>
+        
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center py-4">No se encontraron sucursales</td>
+          </tr>
+        </ng-template>
+    </p-table>
+    
+    <app-create />
+    <app-edit />
+    <p-confirmDialog acceptLabel="Si"></p-confirmDialog>

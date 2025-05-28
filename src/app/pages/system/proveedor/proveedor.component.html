@@ -1,0 +1,104 @@
+<!-------------------------------------------------------------------------------->
+  <p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2" class="mr-2" 
+            (click)="store.openModalCreate()"/>
+    </ng-template>
+<!-------------------------------------------------------------------------------->
+</p-toolbar>
+<!-------------------------------------------------------------------------------->
+  <p-table
+    #dt [value]="store.proveedores()"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [paginator]="true"
+    [rows]="store.perPage()"
+    [totalRecords]="store.totalItems()"
+    (onPage)="onPageChange($event)"
+    [showCurrentPageReport]="true"
+    responsiveLayout="scroll"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} proveedores"
+    [globalFilterFields]="['nombre']" [lazy]="true"
+    styleClass="p-datatable-customers p-datatable-gridlines">
+<!-------------------------------------------------------------------------------->
+    <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <!-- Izquierda -->
+            <p class="font-bold font-mono text-2xl py-1" >PROVEEDORES</p>
+            <!-- Derecha -->
+            <div class="flex items-center gap-2">
+                <p-dropdown
+                    id="backendFilterStatus"
+                    [options]="statusFilterOptions"
+                    [(ngModel)]="filterStatusBackend"
+                    (onChange)="onFilterStatusChange($event.value)"
+                    placeholder="Todos los estados"
+                    optionLabel="label"
+                    optionValue="value">
+                </p-dropdown>
+
+                <p-iconfield>
+                    <p-inputicon styleClass="pi pi-search" />
+                    <input id="backendFilterNombre"
+                          #nombreInput
+                          type="text"
+                          pInputText
+                          [(ngModel)]="filterNombreBackend"
+                          (input)="onFilterNombreInputChange($event)"
+                          placeholder="Buscar..." />
+                </p-iconfield>
+                <p-button label="Limpiar Filtros" icon="pi pi-filter-slash" severity="secondary" (click)="clearAllBackendFilters(nombreInput)">
+                </p-button>      
+            </div>
+        </div>
+    </ng-template>
+    
+<!-------------------------------------------------------------------------------->
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5%; min-width: 4rem;" pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="nombre" style="min-width:10rem">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th style="min-width:10rem" pSortableColumn="direccion">Dirección</th>
+        <th style="min-width:10rem" pSortableColumn="telefono">Teléfono</th>
+        <th style="min-width:8rem" pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+        <th style="width:15rem; text-align: left;" pSortableColumn="acciones">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-proveedor>
+      <tr>
+        <td>{{ proveedor.id }}</td>
+        <td>{{ proveedor.nombre }}</td>
+        <td>{{ proveedor.direccion || 'N/A' }}</td>
+        <td>{{ proveedor.telefono || 'N/A' }}</td>
+        <td>
+          <p-tag [value]="getTextForEstado(proveedor.estado)" [severity]="getSeverityForEstado(proveedor.estado)"></p-tag>
+        </td>
+        
+        <td>
+              <div class="flex gap-2">
+                <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (onClick)= "openEditModal(proveedor)" pTooltip="Editar" tooltipPosition="top"/>
+                @if (proveedor.estado) {
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (onClick)="confirmDelete(proveedor.id)" pTooltip="Desactivar" tooltipPosition="top"/>
+                } @else {
+                <p-button icon="pi pi-history" severity="warn" [rounded]="true" [outlined]="true"
+                            (click)="store.doRestore(proveedor.id)" pTooltip="Activar" tooltipPosition="top"/>
+                }
+              </div>  
+                        
+            </td>
+      </tr>
+    </ng-template>
+<!-------------------------------------------------------------------------------->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="text-center">No se encontraron proveedores.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+<!-------------------------------------------------------------------------------->
+<app-create />
+<app-edit />
+<p-toast></p-toast>
+<p-confirmDialog acceptLabel="Sí" rejectLabel="No"></p-confirmDialog>

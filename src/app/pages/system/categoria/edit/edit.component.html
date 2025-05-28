@@ -1,0 +1,39 @@
+<p-dialog 
+  header="Editar Categoría"
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-3">
+      <div class="field">
+        <label for="nombre" class="block font-bold mb-2">Nombre (*)</label>
+        <input type="text" pInputText id="nombre" formControlName="nombre" autofocus fluid/>
+
+      </div>
+
+      <div class="field">
+        <label for="tipo" class="block font-bold mb-2">Tipo</label>
+        <p-dropdown [options]="tipoOptions" formControlName="tipo"
+                    placeholder="Seleccione tipo" [style]="{ width: '100%' }"></p-dropdown>
+      </div>
+
+      <div class="field">
+        <label for="descripcion" class="block font-bold mb-2">Descripción</label>
+        <textarea pInputTextarea id="descripcion" formControlName="descripcion" rows="3" class="w-full border rounded-md focus:outline-none focus:border-[#10b981] py-2 px-3"></textarea>
+        <!-- <textarea id="direccion" pInputTextarea formControlName="direccion" rows="3" class="w-full border rounded-md focus:outline-none focus:border-[#10b981] py-2 px-3"></textarea> -->
+      </div>
+
+      <!-- <div class="field-checkbox">
+        <p-checkbox [binary]="true" formControlName="estado" inputId="estado"></p-checkbox>
+        <label for="estado" class="ml-2">Activo</label>
+      </div> -->
+    </div>
+
+    <div class="mt-4 flex justify-end gap-2">
+      <p-button label="Cancelar" icon="pi pi-times" (click)="onHide()" [text]="true"></p-button>
+      <p-button label="Guardar" icon="pi pi-check" type="submit" severity="success"></p-button>
+    </div>
+  </form>
+</p-dialog>

@@ -1,0 +1,97 @@
+<p-popover #popFiltrosInventario
+           [dismissable]="true"
+           appendTo="body"
+           [style]="{width: '420px'}"
+           styleClass="inventario-filters-popover">
+
+  <div class="p-4">
+    <div class="flex justify-content-between align-items-center mb-3">
+        <h3 class="text-xl font-semibold m-0">Filtrar Inventario</h3>
+        <button pButton type="button" icon="pi pi-times"
+                class="p-button-text p-button-rounded p-button-plain"
+                (click)="hide()"></button>
+    </div>
+
+    <div class="p-fluid grid gap-y-3">
+
+      <div class="field col-12">
+        <label for="popoverFilterInvTipo" class="block text-sm font-medium">Tipo de Ítem</label>
+        <p-dropdown id="popoverFilterInvTipo"
+                    [options]="tipoItemOptions"
+                    [(ngModel)]="localFilters.tipo"
+                    (onChange)="onTipoItemChange()" placeholder="Seleccionar tipo"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full">
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12" *ngIf="localFilters.tipo === 'Material' || localFilters.tipo === null">
+        <label for="popoverFilterInvMaterial" class="block text-sm font-medium">Material</label>
+        <p-dropdown id="popoverFilterInvMaterial"
+                    [options]="materialStore.materiales()" [(ngModel)]="localFilters.material_id"
+                    placeholder="Seleccionar material"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onMaterialFilter($event)" [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay materiales con "{{lastItemSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay materiales.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12" *ngIf="localFilters.tipo === 'Producto' || localFilters.tipo === null">
+        <label for="popoverFilterInvProducto" class="block text-sm font-medium">Producto</label>
+        <p-dropdown id="popoverFilterInvProducto"
+                    [options]="productStore.products()" [(ngModel)]="localFilters.producto_id"
+                    placeholder="Seleccionar producto"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onProductoFilter($event)" [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay productos con "{{lastItemSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay productos.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterInvSucursal" class="block text-sm font-medium">Sucursal</label>
+        <p-dropdown id="popoverFilterInvSucursal"
+                    [options]="sucursalStore.sucursales()" [(ngModel)]="localFilters.sucursal_id"
+                    placeholder="Seleccionar sucursal"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay sucursales.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <!-- <div class="field col-12">
+        <label for="popoverFilterInvStatus" class="block text-sm font-medium">Estado</label>
+        <p-dropdown id="popoverFilterInvStatus"
+                    [options]="statusOptions"
+                    [(ngModel)]="localFilters.status"
+                    placeholder="Seleccionar estado"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full">
+        </p-dropdown>
+      </div> -->
+    </div>
+
+    <div class="flex justify-end space-x-2 pt-4 mt-4 border-t">
+      <p-button label="Limpiar" icon="pi pi-filter-slash" styleClass="p-button-text p-button-sm" (click)="clearFiltersAndApply()"></p-button>
+      <p-button label="Aplicar" icon="pi pi-check" styleClass="p-button-sm" (click)="applyFilters()"></p-button>
+    </div>
+  </div>
+</p-popover>

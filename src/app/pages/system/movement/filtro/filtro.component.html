@@ -1,0 +1,127 @@
+<p-popover #popFiltrosMovimiento
+           [dismissable]="true"
+           appendTo="body"
+           [style]="{width: '450px'}" styleClass="movimiento-filters-popover">
+
+  <div class="p-4">
+    <div class="flex justify-content-between align-items-center mb-4">
+        <h3 class="text-xl font-semibold m-0">Filtrar Movimientos</h3>
+        <button pButton type="button" icon="pi pi-times"
+                class="p-button-text p-button-rounded p-button-plain"
+                (click)="hide()"></button>
+    </div>
+
+    <div class="p-fluid grid gap-y-3">
+
+      <div class="field col-12">
+        <label for="popoverFilterMovMotivo" class="block text-sm font-medium">Motivo</label>
+        <p-dropdown id="popoverFilterMovMotivo"
+                    [options]="motivoOptions"
+                    [(ngModel)]="localFilters.motivo"
+                    placeholder="Todos los motivos"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMovTipoItem" class="block text-sm font-medium">Tipo de Ítem</label>
+        <p-dropdown id="popoverFilterMovTipoItem"
+                    [options]="tipoItemOptions"
+                    [(ngModel)]="localFilters.tipo"
+                    (onChange)="onTipoItemChange()"
+                    placeholder="Todos los tipos"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12" *ngIf="localFilters.tipo === 'Material' || localFilters.tipo === null">
+        <label for="popoverFilterMovMaterial" class="block text-sm font-medium">Material</label>
+        <p-dropdown id="popoverFilterMovMaterial"
+                    [options]="materialStore.materiales()"
+                    [(ngModel)]="localFilters.material_id"
+                    placeholder="Todos los materiales"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onItemFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12" *ngIf="localFilters.tipo === 'Producto' || localFilters.tipo === null">
+        <label for="popoverFilterMovProducto" class="block text-sm font-medium">Producto</label>
+        <p-dropdown id="popoverFilterMovProducto"
+                    [options]="productStore.products()"
+                    [(ngModel)]="localFilters.producto_id"
+                    placeholder="Todos los productos"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onItemFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+           <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
+           <ng-template pTemplate="empty">Buscar o no hay.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label for="popoverFilterMovSucursal" class="block text-sm font-medium">Sucursal</label>
+        <p-dropdown id="popoverFilterMovSucursal"
+                    [options]="sucursalStore.sucursales()"
+                    [(ngModel)]="localFilters.sucursal_id"
+                    placeholder="Todas las sucursales"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con ese filtro.</ng-template>
+          <ng-template pTemplate="empty">No hay sucursales.</ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="field col-12">
+        <label class="block text-sm font-medium">Rango de Fechas</label>
+        <div class="grid gap-2">
+            <div class="col-6">
+                <p-calendar [(ngModel)]="localFilters.start_date"
+                            dateFormat="dd/mm/yy" placeholder="Desde"
+                            [showIcon]="true" inputId="startDateMov"
+                            [maxDate]="localFilters.end_date || maxDateValue"
+                            styleClass="w-full" inputStyleClass="w-full"></p-calendar>
+            </div>
+            <div class="col-6">
+                <p-calendar [(ngModel)]="localFilters.end_date"
+                            dateFormat="dd/mm/yy" placeholder="Hasta"
+                            [showIcon]="true" inputId="endDateMov"
+                            [minDate]="localFilters.start_date" [maxDate]="maxDateValue"
+                            styleClass="w-full" inputStyleClass="w-full"></p-calendar>
+            </div>
+        </div>
+      </div>
+       </div>
+
+    <div class="flex justify-end space-x-2 pt-4 mt-4 border-t">
+      <p-button label="Limpiar" icon="pi pi-filter-slash" styleClass="p-button-text p-button-sm" (click)="clearFiltersAndApply()"></p-button>
+      <p-button label="Aplicar" icon="pi pi-check" styleClass="p-button-sm" (click)="applyFilters()"></p-button>
+    </div>
+  </div>
+</p-popover>

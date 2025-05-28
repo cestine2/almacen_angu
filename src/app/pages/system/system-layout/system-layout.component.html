@@ -1,0 +1,72 @@
+
+        
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <div class="layout-topbar">
+        <div class="layout-topbar-logo-container">
+            <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
+                <i class="pi pi-bars"></i>
+            </button>
+            <a class="layout-topbar-logo">
+                <img src="/image.png" alt="Login Icon" class="mb-3 w-22 h-10 mx-auto">
+                <!-- <span>ALMACEN</span> -->
+            </a>
+        </div>
+
+<div class="layout-topbar-actions">
+    <div class="layout-config-menu">
+
+        <button class="layout-topbar-menu-button layout-topbar-action"
+                    pStyleClass="@next"
+                    enterFromClass="hidden"
+                    enterActiveClass="animate-scalein"
+                    leaveToClass="hidden"
+                    leaveActiveClass="animate-fadeout"
+                    [hideOnOutsideClick]="true">
+                <i class="pi pi-ellipsis-v"></i>
+            </button>
+
+        <div class="layout-topbar-menu hidden lg:block">
+            <div class="layout-topbar-menu-content">
+                <button type="button" class="layout-topbar-action">
+                    <i class="pi pi-calendar"></i>
+                    <span>Calendar</span>
+                </button>
+                <button type="button" class="layout-topbar-action">
+                    <i class="pi pi-inbox"></i>
+                    <span>Messages</span>
+                </button>
+                <button #userProfileButton type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
+                    <i class="pi pi-user"></i>
+                    <i class="pi pi-angle-down"></i>
+                </button>
+                <p-menu #menu
+                        [model]="userMenuItems"
+                        [popup]="true"
+                        [appendTo]="userProfileButton.parentElement"
+                        styleClass="user-profile-menu-custom">
+                </p-menu>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+    </div>
+
+<!-- SIDEBAR -->
+    <div class="layout-sidebar">
+        <app-menu [model]="model"></app-menu>
+    </div>
+<!-- SIDEBAR -->
+    
+<!-- FOOTER -->
+    <div class="layout-main-container">
+        <div class="layout-main">
+        <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
+    </div>
+<!-- FOOTER -->
+    <div class="layout-mask animate-fadein"></div>
+</div>

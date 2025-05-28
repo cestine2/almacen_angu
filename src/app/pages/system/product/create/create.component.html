@@ -1,0 +1,97 @@
+<p-dialog header="Nuevo Producto"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '600px', minWidth: '320px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid grid gap-y-4 px-1">
+
+      <div class="field col-12">
+        <label for="create-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
+        <input id="create-nombre" type="text" pInputText formControlName="nombre" class="w-full" autofocus>
+        <small *ngIf="productForm.controls['nombre'].touched && productForm.controls['nombre'].errors?.['required']" class="p-error block">Nombre es requerido.</small>
+        <small *ngIf="productForm.controls['nombre'].touched && productForm.controls['nombre'].errors?.['maxlength']" class="p-error block">Nombre no debe exceder 255 caracteres.</small>
+      </div>
+
+      <div class="field col-12">
+        <label for="create-descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <textarea id="create-descripcion" pTextarea formControlName="descripcion" rows="3" class="w-full"></textarea>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="edit-categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoría <span class="text-red-500">*</span></label>
+        <p-dropdown id="edit-categoria"
+                    [options]="categoriaStore.categoriasDropdownOptions()"
+                    formControlName="categoria_id"
+                    placeholder="Seleccionar categoría"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true"
+                    (onFilter)="onCategoriaFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    scrollHeight="180px"
+                    [panelStyleClass]="'w-full min-w-fit'">
+                    <ng-template pTemplate="emptyfilter">
+                    No se encontraron categorías con "{{lastCategoriaSearchTerm}}"
+                    </ng-template>
+          <ng-template pTemplate="empty">Escriba para buscar o no hay categorías.</ng-template>
+        </p-dropdown>
+        <small *ngIf="productForm.controls['categoria_id'].touched && productForm.controls['categoria_id'].errors?.['required']" class="p-error block">Categoría es requerida.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="create-talla" class="block text-sm font-medium text-gray-700 mb-1">Talla <span class="text-red-500">*</span></label>
+         <p-dropdown id="create-talla"
+              [options]="tallaOptions"
+              formControlName="talla"
+              placeholder="Seleccionar talla"
+              optionLabel="label"
+              optionValue="value"
+              [showClear]="true" appendTo="body"
+              styleClass="w-full"
+              [panelStyleClass]="'w-full min-w-fit'">
+    <ng-template pTemplate="empty">No hay tallas.</ng-template> </p-dropdown>
+        <small *ngIf="productForm.controls['talla'].touched && productForm.controls['talla'].errors?.['required']" class="p-error block">Talla es requerida.</small>
+        <small *ngIf="productForm.controls['talla'].touched && productForm.controls['talla'].errors?.['maxlength']" class="p-error block">Talla no debe exceder 10 caracteres.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="create-color" class="block text-sm font-medium text-gray-700 mb-1">Color <span class="text-red-500">*</span></label>
+        <p-dropdown id="create-color"
+                    [options]="colorStore.colors()"
+                    formControlName="color_id"
+                    placeholder="Seleccionar color"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre" [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
+           <ng-template pTemplate="emptyfilter">No se encontraron colores.</ng-template>
+           <ng-template pTemplate="empty">No hay colores.</ng-template>
+        </p-dropdown>
+        <small *ngIf="productForm.controls['color_id'].touched && productForm.controls['color_id'].errors?.['required']" class="p-error block">Color es requerido.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="create-precio" class="block text-sm font-medium text-gray-700 mb-1">Precio <span class="text-red-500">*</span></label>
+        <p-inputNumber id="create-precio" formControlName="precio" mode="currency" currency="PEN" locale="es-PE" [minFractionDigits]="2" [maxFractionDigits]="2" class="w-full">
+        </p-inputNumber>
+        <small *ngIf="productForm.controls['precio'].touched && productForm.controls['precio'].errors?.['required']" class="p-error block">Precio es requerido.</small>
+        <small *ngIf="productForm.controls['precio'].touched && productForm.controls['precio'].errors?.['min']" class="p-error block">Precio no puede ser negativo.</small>
+      </div>
+
+      </div>
+
+    <!-- <ng-template pTemplate="footer"> -->
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+        <p-button label="Guardar" icon="pi pi-check" type="submit" styleClass="bg-indigo-600 hover:bg-indigo-700 text-white"></p-button>
+      </div>
+    <!-- </ng-template> -->
+  </form>
+</p-dialog>

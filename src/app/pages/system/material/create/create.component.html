@@ -1,0 +1,98 @@
+<p-dialog header="Nuevo Material"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '700px', minWidth: '320px'}" (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '85vh'}">
+
+  <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid grid gap-x-4 gap-y-3 px-1">
+
+      <div class="field col-12 md:col-6">
+        <label for="create-mat-cod-articulo" class="block text-sm font-medium text-gray-700 mb-1">Cód. Artículo <span class="text-red-500">*</span></label>
+        <input id="create-mat-cod-articulo" type="text" pInputText formControlName="cod_articulo" class="w-full" autofocus>
+        <!-- <small *ngIf="materialForm.controls['cod_articulo']?.touched && materialForm.controls['cod_articulo']?.errors?.['required']" class="p-error block">Requerido.</small> -->
+        <small *ngIf="materialForm.controls['cod_articulo']?.touched && materialForm.controls['cod_articulo']?.errors?.['maxlength']" class="p-error block">Máx. 255.</small>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label for="create-mat-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Material <span class="text-red-500">*</span></label>
+        <input id="create-mat-nombre" type="text" pInputText formControlName="nombre" class="w-full">
+        <!-- <small *ngIf="materialForm.controls['nombre']?.touched && materialForm.controls['nombre']?.errors?.['required']" class="p-error block">Requerido.</small> -->
+        <small *ngIf="materialForm.controls['nombre']?.touched && materialForm.controls['nombre']?.errors?.['maxlength']" class="p-error block">Máx. 255.</small>
+      </div>
+
+      <div class="field col-12">
+        <label for="create-mat-descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <textarea id="create-mat-descripcion" pTextarea formControlName="descripcion" rows="2" class="w-full"></textarea>
+        <!-- <small *ngIf="materialForm.controls['descripcion']?.touched && materialForm.controls['descripcion']?.errors?.['maxlength']" class="p-error block">Máx. 255.</small> -->
+      </div>
+
+      <div class="field col-12 md:col-4">
+        <label for="create-mat-categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoría <span class="text-red-500">*</span></label>
+        <p-dropdown id="create-mat-categoria"
+                    [options]="categoriaStore.categoriasDropdownOptions()"
+                    formControlName="categoria_id"
+                    placeholder="Seleccionar"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true"
+                    (onFilter)="onCategoriaFilter($event)"
+                    [showClear]="true"
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con "{{lastCategoriaSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay.</ng-template>
+        </p-dropdown>
+        <!-- <small *ngIf="materialForm.controls['categoria_id']?.touched && materialForm.controls['categoria_id']?.errors?.['required']" class="p-error block">Requerido.</small> -->
+      </div>
+
+      <div class="field col-12 md:col-4">
+        <label for="create-mat-proveedor" class="block text-sm font-medium text-gray-700 mb-1">Proveedor <span class="text-red-500">*</span></label>
+        <p-dropdown id="create-mat-proveedor"
+                    [options]="proveedorStore.proveedores()"
+                    formControlName="proveedor_id"
+                    placeholder="Seleccionar"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre" (onFilter)="onProveedorFilter($event)" [showClear]="true"
+                    appendTo="body" styleClass="w-full" [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con "{{lastProveedorSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay.</ng-template>
+        </p-dropdown>
+        <!-- <small *ngIf="materialForm.controls['proveedor_id']?.touched && materialForm.controls['proveedor_id']?.errors?.['required']" class="p-error block">Requerido.</small> -->
+      </div>
+
+      <div class="field col-12 md:col-4">
+        <label for="create-mat-color" class="block text-sm font-medium text-gray-700 mb-1">Color <span class="text-red-500">*</span></label>
+        <p-dropdown id="create-mat-color"
+                    [options]="colorStore.colors()"
+                    formControlName="color_id"
+                    placeholder="Seleccionar"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [filter]="true" filterBy="nombre"
+                    (onFilter)="onColorFilter($event)" [showClear]="true"
+                    appendTo="body" styleClass="w-full" [panelStyleClass]="'w-full min-w-fit'"
+                    scrollHeight="180px">
+          <ng-template pTemplate="emptyfilter">No hay con "{{lastColorSearchTerm}}".</ng-template>
+          <ng-template pTemplate="empty">Buscar o no hay.</ng-template>
+        </p-dropdown>
+        <!-- <small *ngIf="materialForm.controls['color_id']?.touched && materialForm.controls['color_id']?.errors?.['required']" class="p-error block">Requerido.</small> -->
+      </div>
+<!-- 
+      <div class="field col-12 flex items-center pt-2">
+        <p-checkbox formControlName="estado" [binary]="true" inputId="create-mat-estado"></p-checkbox>
+        <label for="create-mat-estado" class="ml-2 text-sm font-medium text-gray-700">Activo</label>
+      </div> -->
+    </div>
+    
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+        <p-button label="Guardar" icon="pi pi-check" type="submit" styleClass="bg-indigo-600 hover:bg-indigo-700 text-white"></p-button>
+      </div>
+  </form>
+</p-dialog>
