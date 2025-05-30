@@ -1,1 +1,126 @@
-<p>user works!</p>
+
+  <p-toolbar styleClass="mb-6">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Nuevo" icon="pi pi-plus"  (click)="openCreateUserModal()"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dtUsers
+    [value]="store.users()"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [paginator]="true"
+    [rows]="store.perPage()"
+    [totalRecords]="store.totalItems()"
+    (onPage)="onPageChange($event)"
+    [showCurrentPageReport]="true"
+    responsiveLayout="scroll"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios"
+    [globalFilterFields]="['id', 'nombre', 'email', 'sucursal.nombre', 'roles.name']" [lazy]="true"
+    styleClass="p-datatable-customers p-datatable-gridlines">
+
+    <ng-template #caption>
+    <div class="flex items-center justify-between">
+        <!-- Izquierda - Título -->
+        <p class="font-bold font-mono text-2xl py-1">GESTIÓN DE USUARIOS</p>
+        
+        <!-- Derecha - Filtros -->
+        <div class="flex items-center gap-2">
+            <!-- Dropdown Estado -->
+            <p-dropdown
+                id="userFilterStatusBackend"
+                [options]="statusFilterOptions"
+                [(ngModel)]="filterStatusBackend"
+                (onChange)="onFilterStatusChange($event.value)"
+                placeholder="Todos los estados"
+                optionLabel="label"
+                optionValue="value"
+                [showClear]="filterStatusBackend !== 'active'"
+                styleClass="min-w-10rem">
+            </p-dropdown>
+
+            <!-- Buscador con icono -->
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input 
+                    #nombreInputBackend
+                    type="text"
+                    pInputText
+                    [(ngModel)]="filterNombreBackend"
+                    (input)="onFilterNombreInputChange($event)"
+                    placeholder="Buscar por nombre..."
+                    class="w-full" />
+            </p-iconfield>
+
+            <!-- Botón Limpiar -->
+            <p-button 
+                label="Limpiar Filtros" 
+                icon="pi pi-filter-slash" 
+                severity="secondary" 
+                (click)="clearBackendFilters(nombreInputBackend)">
+            </p-button>
+        </div>
+    </div>
+</ng-template>
+
+   
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5rem" pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="nombre" style="min-width:15rem">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+        <th pSortableColumn="email" style="min-width:15rem">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="sucursal.nombre" style="min-width:12rem">Sucursal <p-sortIcon field="sucursal.nombre"></p-sortIcon></th>
+        <th pSortableColumn="roles.name" style="min-width:10rem">Rol <p-sortIcon field="roles.name"></p-sortIcon></th> <th style="min-width:8rem" pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+        <th style="width:10rem; text-align: center;">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.sucursal?.nombre || 'N/A' }}</td>
+        <td>{{ getRoleNames(user) | titlecase }}</td> <td>
+          <p-tag [value]="getTextForEstado(user.estado)" [severity]="getSeverityForEstado(user.estado)"></p-tag>
+        </td>
+        <td style="text-align: center;">
+          <div class="flex gap-2 justify-content-center">
+            <button pButton pRipple icon="pi pi-pencil"
+                    class="p-button-rounded p-button-info p-button-outlined"
+                    (click)="openEditUserModal(user)"
+                    pTooltip="Editar Usuario" tooltipPosition="top"></button>
+            <ng-container *ngIf="user.estado; else restoreButtonUser">
+              <button pButton pRipple icon="pi pi-times-circle"
+                      class="p-button-rounded p-button-danger p-button-outlined"
+                      (click)="confirmDeleteOrRestore(user)"
+                      pTooltip="Desactivar Usuario" tooltipPosition="top"></button>
+            </ng-container>
+            <ng-template #restoreButtonUser>
+              <button pButton pRipple icon="pi pi-history"
+                      class="p-button-rounded p-button-warning p-button-outlined"
+                      (click)="confirmDeleteOrRestore(user)"
+                      pTooltip="Restaurar Usuario" tooltipPosition="top"></button>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center">No se encontraron usuarios.</td> </tr>
+    </ng-template>
+    <ng-template pTemplate="loadingbody">
+        <tr>
+            <td colspan="7" class="text-center">Cargando usuarios...</td> </tr>
+    </ng-template>
+  </p-table>
+
+<app-create />
+<app-edit />
+<p-toast></p-toast>
+<p-confirmDialog acceptLabel="Sí" rejectLabel="No"></p-confirmDialog>

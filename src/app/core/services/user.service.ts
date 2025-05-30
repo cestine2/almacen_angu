@@ -10,7 +10,7 @@ import { UserEntity } from '../../domain/entities/UserEntity';
 export interface CreateUserData {
   nombre: string; // Usamos 'nombre'
   email: string;
-  password?: string; // Password es requerido en creación
+  password: string; // Password es requerido en creación
   sucursal_id: number;
   role_id: number;
   estado?: boolean; // Backend puede tener un default

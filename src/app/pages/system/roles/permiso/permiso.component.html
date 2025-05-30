@@ -1,0 +1,58 @@
+<p-dialog [header]="'Asignar Permisos a Rol: ' + (currentRoleName)"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '700px', minWidth: '450px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '85vh'}">
+
+  @if (componentSelectedRole) {
+    <form [formGroup]="permissionsForm" (ngSubmit)="onSubmit()">
+      <p-scrollPanel [style]="{width: '100%', height: 'calc(85vh - 180px)'}">
+        
+     
+
+        @for (group of permissionGroups; track group.groupName) {
+          <div class="mb-4 p-3 border rounded-md shadow-sm">
+            @if (group.masterControl) {
+              <div class="flex align-items-center mb-3 pb-2 border-b">
+                <p-checkbox [formControl]="group.masterControl"
+                            [binary]="true"
+                            [inputId]="generateSafeId('group-cb', group.groupName)"></p-checkbox>
+                <label [for]="generateSafeId('group-cb', group.groupName)" class="ml-2 text-lg font-semibold cursor-pointer text-gray-700">
+                  {{ group.groupName }}
+                </label>
+              </div>
+            }
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2">
+              @for (permCtrl of group.permissions; track permCtrl.entity.id) {
+                <div class="field-checkbox flex align-items-center my-1">
+                  <p-checkbox [formControl]="permCtrl.control"
+                              [binary]="true"
+                              [inputId]="'perm-' + permCtrl.entity.id"></p-checkbox>
+                  <label [for]="'perm-' + permCtrl.entity.id" class="ml-2 cursor-pointer text-sm text-gray-600" [title]="permCtrl.entity.name">
+                    {{ permCtrl.entity.description || (permCtrl.entity.name | titlecase) }}
+                  </label>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </p-scrollPanel>
+    </form>
+  
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+      <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+      <p-button label="Guardar Permisos" icon="pi pi-save" type="button"
+                (click)="onSubmit()"
+                styleClass="bg-indigo-600 hover:bg-indigo-700 text-white"
+                ></p-button>
+    </div>
+  </ng-template>
+
+</p-dialog>

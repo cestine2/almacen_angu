@@ -1,6 +1,6 @@
+import { RoleEntity } from "./RoleEntity";
+import { SucursalEntity } from "./SucursalEntity";
 
-import { SucursalEntity } from './SucursalEntity'; // Ajusta la ruta si es necesario
-import { RoleEntity } from './RoleEntity'; // Ajusta la ruta si es necesario
 
 // Refleja la estructura que devuelve tu App\Http\Resources\UserResource
 export type UserEntity = {

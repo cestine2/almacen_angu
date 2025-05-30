@@ -1,6 +1,10 @@
-// Define las propiedades exactas de tu modelo Role en Laravel
+import { PermissionEntity } from './PermissionEntity';
+
 export type RoleEntity = {
-    id: number;
-    name: string; // O 'nombre' si tu modelo Role usa ese campo
-    // ... otras propiedades de Role (ej: guard_name)
+  id: number;
+  name: string;
+  guard_name?: string; // Usualmente 'api' o 'web'
+  permissions?: PermissionEntity[]; // Array de permisos asociados a este rol
+  created_at?: string;
+  updated_at?: string;
 }

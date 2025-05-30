@@ -1,0 +1,43 @@
+<p-dialog header="Editar Rol"
+            [(visible)]="isModalOpen"
+            [modal]="true"
+            [style]="{width: '450px', minWidth: '300px'}"
+            (onShow)="onModalShow()"
+            (onHide)="hideDialog()"
+            position="center"
+            [contentStyle]="{'overflow-y': 'auto', 'max-height': '80vh'}">
+
+  <form [formGroup]="roleForm" (ngSubmit)="onSubmit()" *ngIf="store.selectedRole() as selectedRole">
+    <div class="p-fluid grid gap-y-4 px-1">
+
+      <div class="field col-12">
+        <label for="edit-role-name" class="block text-sm font-medium text-gray-700 mb-1">
+          Nombre del Rol <span class="text-red-500">*</span>
+        </label>
+        <input id="edit-role-name" type="text" pInputText formControlName="name" class="w-full" autofocus>
+        <small *ngIf="roleForm.controls['name']?.touched && roleForm.controls['name']?.errors?.['required']" class="p-error block">
+          El nombre del rol es requerido.
+        </small>
+        <small *ngIf="roleForm.controls['name']?.touched && roleForm.controls['name']?.errors?.['maxlength']" class="p-error block">
+          El nombre no debe exceder 255 caracteres.
+        </small>
+        </div>
+
+      <div class="field col-12" *ngIf="selectedRole.guard_name">
+        <label for="edit-role-guard" class="block text-sm font-medium text-gray-700 mb-1">
+          Guard Name
+        </label>
+        <input id="edit-role-guard" type="text" pInputText [ngModel]="selectedRole.guard_name" [ngModelOptions]="{standalone: true}" class="w-full" [disabled]="true">
+      </div>
+
+    </div>
+
+      <div class="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
+        <p-button label="Cancelar" icon="pi pi-times" styleClass="p-button-text text-gray-700 hover:bg-gray-100" (click)="hideDialog()"></p-button>
+        <p-button label="Guardar" icon="pi pi-check" type="submit" styleClass="bg-indigo-600 hover:bg-indigo-700 text-white"></p-button>
+        </div>
+  </form>
+  <ng-template [ngIf]="!store.selectedRole() && isModalOpen">
+      <p class="p-4 text-center">No hay un rol seleccionado para editar o se está cargando.</p>
+  </ng-template>
+</p-dialog>
