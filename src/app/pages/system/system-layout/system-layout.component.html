@@ -1,72 +1,76 @@
-
-        
 <div class="layout-wrapper" [ngClass]="containerClass">
     <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
-            <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
+            <button type="button"
+                class="layout-menu-button layout-topbar-action"
+                (click)="layoutService.onMenuToggle()"
+            >
                 <i class="pi pi-bars"></i>
             </button>
-            <a class="layout-topbar-logo">
-                <img src="/image.png" alt="Login Icon" class="mb-3 w-22 h-10 mx-auto">
-                <!-- <span>ALMACEN</span> -->
-            </a>
+            <a routerLink="/system/dashboard" class="layout-topbar-logo"> <img src="/image.png" alt="Login Icon" class="mb-3 w-22 h-10 mx-auto" />
+                </a>
         </div>
 
-<div class="layout-topbar-actions">
-    <div class="layout-config-menu">
-
-        <button class="layout-topbar-menu-button layout-topbar-action"
+        <div class="layout-topbar-actions">
+            <div class="layout-config-menu">
+                <button type="button"
+                    class="layout-topbar-menu-button layout-topbar-action"
                     pStyleClass="@next"
                     enterFromClass="hidden"
                     enterActiveClass="animate-scalein"
                     leaveToClass="hidden"
                     leaveActiveClass="animate-fadeout"
-                    [hideOnOutsideClick]="true">
-                <i class="pi pi-ellipsis-v"></i>
-            </button>
+                    [hideOnOutsideClick]="true"
+                >
+                    <i class="pi pi-ellipsis-v"></i>
+                </button>
 
-        <div class="layout-topbar-menu hidden lg:block">
-            <div class="layout-topbar-menu-content">
-                <!-- <button type="button" class="layout-topbar-action">
-                    <i class="pi pi-calendar"></i>
-                    <span>Calendar</span>
-                </button>
-                <button type="button" class="layout-topbar-action">
-                    <i class="pi pi-inbox"></i>
-                    <span>Messages</span>
-                </button> -->
-                <button #userProfileButton type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
-                    <i class="pi pi-user"></i>
-                    <i class="pi pi-angle-down"></i>
-                </button>
-                <p-menu #menu
-                        [model]="userMenuItems"
-                        [popup]="true"
-                        [appendTo]="userProfileButton.parentElement"
-                        styleClass="user-profile-menu-custom">
-                </p-menu>
+                <div class="layout-topbar-menu hidden lg:flex align-items-center"> <div class="layout-topbar-menu-content"> @if (currentUserName()) {
+                            <span class="hidden lg:flex align-items-center p-2 mr-2" style="color: var(--topbar-item-text-color, #495057); cursor: default; white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis;">
+                                {{ currentUserName() }}
+                            </span>
+                        }
+                        
+                        <button #userProfileButton
+                                type="button"
+                                class="layout-topbar-action flex align-items-center" (click)="menu.toggle($event)"
+                                style="border: none; background: transparent; padding: 0.75rem; cursor: pointer; color: var(--topbar-item-text-color, #495057);">
+
+                            <i class="pi pi-user mr-1"></i> @if (currentUserName()) {
+                                <span class="lg:hidden mr-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">
+                                    {{ currentUserName() }}
+                                </span>
+                            } @else {
+                                 <span class="lg:hidden mr-1">Usuario</span>
+                            }
+                            
+                            <i class="pi pi-angle-down ml-1"></i>
+                        </button>
+                        
+                        <p-menu
+                            #menu
+                            [model]="userMenuItems"
+                            [popup]="true"
+                            appendTo="body" 
+                            styleClass="user-profile-menu-custom"
+                        >
+                        </p-menu>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-</div>
-
-
     </div>
 
-<!-- SIDEBAR -->
     <div class="layout-sidebar">
         <app-menu [model]="model"></app-menu>
     </div>
-<!-- SIDEBAR -->
-    
-<!-- FOOTER -->
     <div class="layout-main-container">
         <div class="layout-main">
         <router-outlet></router-outlet>
         </div>
         <app-footer></app-footer>
     </div>
-<!-- FOOTER -->
-    <div class="layout-mask animate-fadein"></div>
+    
+        <div class="layout-mask p-component-overlay" (click)="hideMenu()"></div>
+    
 </div>

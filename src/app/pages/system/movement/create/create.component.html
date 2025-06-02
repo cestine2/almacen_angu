@@ -18,7 +18,8 @@
                     placeholder="Seleccionar motivo..."
                     optionLabel="label"
                     optionValue="value"
-                    appendTo="body" styleClass="w-full">
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
         </p-dropdown>
         <small *ngIf="movimientoForm.controls['motivo']?.touched && movimientoForm.controls['motivo']?.errors?.['required']" class="p-error block">Motivo es requerido.</small>
       </div>
@@ -31,7 +32,8 @@
                     placeholder="Seleccionar tipo..."
                     optionLabel="label"
                     optionValue="value"
-                    appendTo="body" styleClass="w-full">
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
         </p-dropdown>
         <small *ngIf="movimientoForm.controls['tipo']?.touched && movimientoForm.controls['tipo']?.errors?.['required']" class="p-error block">Tipo es requerido.</small>
       </div>
@@ -49,7 +51,7 @@
                       placeholder="Seleccionar material..."
                       optionLabel="nombre" optionValue="id"
                       [filter]="true" filterBy="nombre" (onFilter)="onItemFilter($event)"
-                      [showClear]="true" appendTo="body" styleClass="w-full" scrollHeight="180px">
+                      [showClear]="true" appendTo="body" styleClass="w-full" [panelStyleClass]="'w-full min-w-fit'" scrollHeight="180px">
             <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
             <ng-template pTemplate="empty">Buscar o no hay materiales.</ng-template>
           </p-dropdown>
@@ -60,7 +62,7 @@
                       placeholder="Seleccionar producto..."
                       optionLabel="nombre" optionValue="id"
                       [filter]="true" filterBy="nombre" (onFilter)="onItemFilter($event)"
-                      [showClear]="true" appendTo="body" styleClass="w-full" scrollHeight="180px">
+                      [showClear]="true" appendTo="body" styleClass="w-full" scrollHeight="180px" [panelStyleClass]="'w-full min-w-fit'">
             <ng-template pTemplate="emptyfilter">No hay con "{{lastItemSearchTerm}}".</ng-template>
             <ng-template pTemplate="empty">Buscar o no hay productos.</ng-template>
           </p-dropdown>
@@ -99,7 +101,7 @@
                     placeholder="Seleccionar sucursal..."
                     optionLabel="nombre" optionValue="id"
                     [filter]="true" filterBy="nombre" [showClear]="true"
-                    appendTo="body" styleClass="w-full" scrollHeight="180px">
+                    appendTo="body" styleClass="w-full" scrollHeight="180px" [panelStyleClass]="'w-full min-w-fit'">
           <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
           <ng-template pTemplate="empty">No hay sucursales.</ng-template>
         </p-dropdown>

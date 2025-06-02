@@ -37,15 +37,7 @@
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <p class="font-bold font-mono text-2xl py-1" >INVENTARIO</p>
-        <!-- <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input #gbInvInput pInputText type="text" [(ngModel)]="globalTableFilterValue"
-                   (input)="onGlobalTableFilter(dtInventarios, $event)" placeholder="Buscar en tabla..."
-                   class="w-full sm:w-auto"/>
-            <button *ngIf="globalTableFilterValue" pButton icon="pi pi-times"
-                    class="p-button-text p-button-rounded ml-1" (click)="clearGlobalTableFilter(dtInventarios, gbInvInput)"
-                    pTooltip="Limpiar búsqueda" tooltipPosition="top"></button>
-        </span> -->
+    
       </div>
     </ng-template>
 
@@ -69,29 +61,7 @@
         <td>{{ getItemName(inventario) }}</td> <td>{{ inventario.sucursal?.nombre || 'N/A' }}</td>
         <td style="text-align: right;">{{ inventario.stock_actual | number }}</td>
         <td>{{ inventario.usuario?.nombre || 'N/A' }}</td>
-        <!-- <td>
-          <p-tag [value]="getTextForEstado(inventario.estado)" [severity]="getSeverityForEstado(inventario.estado)"></p-tag>
-        </td> -->
-        <!-- <td style="text-align: center;">
-          <div class="flex gap-2 justify-content-center">
-            <button pButton pRipple icon="pi pi-pencil"
-                    class="p-button-rounded p-button-info p-button-outlined"
-                    (click)="openEditStockModal(inventario)"
-                    pTooltip="Editar Stock" tooltipPosition="top"></button>
-            <ng-container *ngIf="inventario.estado; else restoreButtonInv">
-              <button pButton pRipple icon="pi pi-times-circle"
-                      class="p-button-rounded p-button-danger p-button-outlined"
-                      (click)="confirmDeleteOrRestore(inventario)"
-                      pTooltip="Desactivar Registro" tooltipPosition="top"></button>
-            </ng-container>
-            <ng-template #restoreButtonInv>
-              <button pButton pRipple icon="pi pi-history"
-                      class="p-button-rounded p-button-warning p-button-outlined"
-                      (click)="confirmDeleteOrRestore(inventario)"
-                      pTooltip="Restaurar Registro" tooltipPosition="top"></button>
-            </ng-template>
-          </div>
-        </td> -->
+       
       </tr>
     </ng-template>
 

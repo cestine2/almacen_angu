@@ -23,7 +23,9 @@
                     optionLabel="label"
                     optionValue="value"
                     [showClear]="true"
-                    appendTo="body" styleClass="w-full">
+                    appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'">
+                    
         </p-dropdown>
       </div>
 
@@ -37,6 +39,7 @@
                     [filter]="true" filterBy="nombre"
                     (onFilter)="onMaterialFilter($event)" [showClear]="true"
                     appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
                     scrollHeight="180px">
           <ng-template pTemplate="emptyfilter">No hay materiales con "{{lastItemSearchTerm}}".</ng-template>
           <ng-template pTemplate="empty">Buscar o no hay materiales.</ng-template>
@@ -53,6 +56,7 @@
                     [filter]="true" filterBy="nombre"
                     (onFilter)="onProductoFilter($event)" [showClear]="true"
                     appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
                     scrollHeight="180px">
           <ng-template pTemplate="emptyfilter">No hay productos con "{{lastItemSearchTerm}}".</ng-template>
           <ng-template pTemplate="empty">Buscar o no hay productos.</ng-template>
@@ -69,24 +73,12 @@
                     [filter]="true" filterBy="nombre"
                     [showClear]="true"
                     appendTo="body" styleClass="w-full"
+                    [panelStyleClass]="'w-full min-w-fit'"
                     scrollHeight="180px">
           <ng-template pTemplate="emptyfilter">No hay sucursales con ese filtro.</ng-template>
           <ng-template pTemplate="empty">No hay sucursales.</ng-template>
         </p-dropdown>
       </div>
-
-      <!-- <div class="field col-12">
-        <label for="popoverFilterInvStatus" class="block text-sm font-medium">Estado</label>
-        <p-dropdown id="popoverFilterInvStatus"
-                    [options]="statusOptions"
-                    [(ngModel)]="localFilters.status"
-                    placeholder="Seleccionar estado"
-                    optionLabel="label"
-                    optionValue="value"
-                    [showClear]="true"
-                    appendTo="body" styleClass="w-full">
-        </p-dropdown>
-      </div> -->
     </div>
 
     <div class="flex justify-end space-x-2 pt-4 mt-4 border-t">

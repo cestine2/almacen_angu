@@ -8,8 +8,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InventarioStore } from '../../../../../stores/InventarioStore';
 import { MaterialStore } from '../../../../../stores/MaterialStore';
 import { ProductStore } from '../../../../../stores/ProductoStore';
-import { SucursalStore } from '../../../../../stores/SucursalStore';
+// import { SucursalStore } from '../../../../../stores/SucursalStore';
 import { InventarioListFilters } from '../../../../domain/dtos/InventarioListFilters';
+import { SucursalStore } from '../../../../../stores/SucursalStore';
 
 @Component({
   selector: 'app-filtro',
@@ -28,7 +29,7 @@ export class FiltroComponent {
   inventarioStore = inject(InventarioStore);
   materialStore = inject(MaterialStore);   // Para opciones de materiales
   productStore = inject(ProductStore);      // Para opciones de productos
-  sucursalStore = inject(SucursalStore);   
+  sucursalStore = inject(SucursalStore);
 
 
   @ViewChild('popFiltrosInventario') pop!: Popover;
@@ -65,7 +66,7 @@ export class FiltroComponent {
     } else {
       this.syncLocalFiltersWithStore();
       // Cargar opciones para dropdowns al mostrar el popover
-      this.loadDropdownOptions();
+      // this.loadDropdownOptions();
       this.pop.show(event, target);
       this.panelJustOpened = false;
     }
@@ -90,29 +91,6 @@ export class FiltroComponent {
     }
   }
 
-  private loadDropdownOptions() {
-    // Cargar Sucursales
-    // Asumiendo que SucursalStore tiene un método para cargar todas las activas para dropdowns
-    // o que su `doList` trae lo necesario.
-    if (this.sucursalStore.sucursales().length === 0) { // Carga solo si no hay datos
-        // this.sucursalStore.loadAllActiveSucursalesForDropdown(); // Método ideal
-        this.sucursalStore.doList(); // O ajusta doList para traer todos los activos
-    }
-     if (this.materialStore.materiales().length === 0) { // O una signal específica como `materialesDropdownOptions`
-        console.log('[FiltroInventario] Cargando materiales para dropdown...');
-        // Esto cargará la lista paginada principal de materiales. Para un filtro,
-        // es mejor un método que traiga una lista no paginada de ítems activos.
-        this.materialStore.doList(); // Considera crear un `loadMaterialsForDropdown` en MaterialStore
-    }
-
-    // Cargar Productos para el dropdown de filtro
-    if (this.productStore.products().length === 0) {
-      console.log('[FiltroInventario] Cargando productos para dropdown...');
-      this.productStore.doList(); // Similar a materiales, considera un método específico en ProductStore
-    }
-
-
-  }
 
   // Cuando el tipo de ítem (Material/Producto) cambia en el filtro
   onTipoItemChange() {

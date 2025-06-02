@@ -33,10 +33,10 @@ interface LocalMovimientoFilters extends Omit<MovimientoInventarioListFilters, '
   styleUrls: ['./filtro.component.scss']
 })
 export class FiltroComponent {
-  readonly movimientoStore = inject(MovimientoInventarioStore);
-  readonly materialStore = inject(MaterialStore);
-  readonly productStore = inject(ProductStore);
-  readonly sucursalStore = inject(SucursalStore);
+  movimientoStore = inject(MovimientoInventarioStore);
+  materialStore = inject(MaterialStore);
+  productStore = inject(ProductStore);
+  sucursalStore = inject(SucursalStore);
 
   @ViewChild('popFiltrosMovimiento') pop!: Popover;
 

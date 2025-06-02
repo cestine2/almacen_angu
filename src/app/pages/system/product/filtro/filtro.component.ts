@@ -36,8 +36,8 @@ export class FiltroComponent {
   // Copia local de los filtros para el formulario del modal
   // Se inicializan con los filtros actuales del store cuando se abre el modal (o en ngOnInit)
   localFilters: ProductListFilters = { ...this.productStore.filters() };
-  private modalJustOpened = true;
-  private panelJustOpened = true;
+  modalJustOpened = true;
+  panelJustOpened = true;
   // Opciones para el dropdown de estado (puedes moverlo a un servicio/constante si se usa en más sitios)
   statusOptions = [
     { label: 'Activos', value: 'active' },

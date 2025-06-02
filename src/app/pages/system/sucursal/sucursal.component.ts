@@ -67,35 +67,7 @@ export class SucursalComponent implements OnInit {
     return estado ? 'success' : 'danger';
   }
 
-   // Método para iniciar el proceso de eliminación (desactivación)
-  // deleteBranch(sucursal: SucursalEntity) {
-  //   const isCurrentlyActive = sucursal.estado;
-
-  //   // Mensaje y encabezado estáticos
-  //   const message = `¿Estás seguro de cambiar el estado de la sucursal '${sucursal.nombre}'?`; // Mensaje genérico
-  //   const header = 'Confirmar Cambio de Estado'; // Encabezado genérico
-  //   const icon = 'pi pi-question-circle'; // Opcional: un ícono genérico
-
-  //   this.confirmationService.confirm({
-  //     message: message, // Usa el mensaje estático
-  //     header: header, // Usa el encabezado estático
-  //     icon: icon,     // Usa el ícono estático
-  //     acceptLabel: 'Sí',
-  //     rejectLabel: 'No',
-  //     rejectButtonStyleClass: "p-button-text",
-  //     accept: () => {
-  //       // Aquí la lógica sigue necesitando verificar el estado
-  //       // para llamar al método correcto del store (doDelete o doRestore)
-  //       if (isCurrentlyActive) {
-  //         // Si estaba activa, llama a doDelete (desactivar)
-  //         this.sucursalStore.doDelete(sucursal.id);
-  //       } else {
-  //         // Si estaba inactiva, llama a doRestore (restaurar)
-  //         this.sucursalStore.doRestore(sucursal.id);
-  //       }
-  //     }
-  //   });
-  // }
+ 
 
   deleteBranch(id: number) {
     this.confirmationService.confirm({

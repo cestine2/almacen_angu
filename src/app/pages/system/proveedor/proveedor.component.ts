@@ -83,12 +83,12 @@ export class ProveedorComponent {
     // Por ahora, la inicialización y el ngModel deberían ser suficientes.
   }
 
-  ngOnDestroy() {
-    // Limpiar la suscripción del debounce
-    if (this.nombreFilterSubscription) {
-      this.nombreFilterSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy() {
+  //   // Limpiar la suscripción del debounce
+  //   if (this.nombreFilterSubscription) {
+  //     this.nombreFilterSubscription.unsubscribe();
+  //   }
+  // }
 
   onPageChange(event: any) {
     const newPage = (event.first / event.rows) + 1;

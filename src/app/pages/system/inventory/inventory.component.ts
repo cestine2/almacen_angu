@@ -15,12 +15,9 @@ import { ToastModule } from 'primeng/toast';
 import { InventarioStore } from '../../../../stores/InventarioStore';
 import { FiltroComponent } from './filtro/filtro.component';
 import { InventarioEntity } from '../../../domain/entities/InventarioEntity';
-// import { CreateComponent } from "../inventory/create/create.component";
-// import { EditComponent } from "../inventory/edit/edit.component";
 import { MaterialStore } from '../../../../stores/MaterialStore';
 import { ProductStore } from '../../../../stores/ProductoStore';
-
-
+import { SucursalStore } from '../../../../stores/SucursalStore';
 
 @Component({
   selector: 'app-inventory',
@@ -37,9 +34,7 @@ import { ProductStore } from '../../../../stores/ProductoStore';
     InputIconModule,
     ToastModule,
     TitleCasePipe,
-    // CurrencyPipe, // Para el stock si lo quieres formatear como número
     FiltroComponent,
-    // CreateComponent, EditComponent
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss'
@@ -50,6 +45,7 @@ export class InventoryComponent {
   confirmationService = inject(ConfirmationService);
   materialStore = inject(MaterialStore)
   productStore = inject(ProductStore)
+  sucursalStore = inject(SucursalStore);
 
   @ViewChild(FiltroComponent) filterPopover?: FiltroComponent;
 
@@ -61,11 +57,10 @@ export class InventoryComponent {
   ngOnInit() {
     this.store.doList(); // Carga inicial de registros de inventario
     this.materialStore.doList();
-   
-
+    this.sucursalStore.doList();
     // Cargar Productos para el dropdown de filtro
     this.productStore.doList();
-      
+    
   }
 
   onPageChange(event: any) {
@@ -99,34 +94,6 @@ export class InventoryComponent {
     }
   }
 
-  // openRegisterStockModal() {
-  //   this.store.openModalRegisterStock();
-  // }
-
-  // openEditStockModal(inventario: InventarioEntity) {
-  //   this.store.openModalEditStock(inventario);
-  // }
-
-  // --- ACCIONES CRUD (Delete/Restore) ---
-  // confirmDeleteOrRestore(inventario: InventarioEntity) {
-  //   const action = inventario.estado ? 'desactivar' : 'restaurar';
-  //   const itemName = inventario.item?.nombre || (inventario.tipo === 'Material' ? `Material ID ${inventario.material_id}` : `Producto ID ${inventario.producto_id}`);
-
-  //   this.confirmationService.confirm({
-  //     message: `¿Estás seguro de ${action} el registro de inventario para '${itemName}' en la sucursal '${inventario.sucursal?.nombre}'?`,
-  //     header: `Confirmar ${action.charAt(0).toUpperCase() + action.slice(1)}`,
-  //     icon: inventario.estado ? 'pi pi-exclamation-triangle' : 'pi pi-info-circle',
-  //     acceptLabel: 'Sí',
-  //     rejectLabel: 'No',
-  //     accept: () => {
-  //       if (inventario.estado) {
-  //         this.store.doDelete(inventario.id);
-  //       } else {
-  //         this.store.doRestore(inventario.id);
-  //       }
-  //     }
-  //   });
-  // }
 
   // --- HELPERS PARA LA TABLA ---
   getSeverityForEstado(estado: boolean): 'success' | 'danger' {

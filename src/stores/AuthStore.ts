@@ -57,18 +57,29 @@ export const AuthStore = signalStore(
         console.log('[AuthStore] User set. Permissions:', permissions);
       }
     },
-    loginSuccess(token: string, user: UserEntity) {
-      const permissions = user.permissions?.map(p => p.name) || [];
+    // loginSuccess(token: string, user: UserEntity) {
+    //   const permissions = user.permissions?.map(p => p.name) || [];
+    //   patchState(store, {
+    //     token,
+    //     currentUser: user,
+    //     isAuthenticated: true,
+    //     isLoading: false,
+    //     error: null,
+    //     userPermissions: permissions, // <<< GUARDAR PERMISOS
+    //   });
+    //   console.log('[AuthStore] Login successful. Permissions stored:', permissions);
+    // },
+    loginSuccess(token: string, user: UserEntity, permissionNames: string[]) { // <<< AÑADIDO permissionNames
       patchState(store, {
         token,
         currentUser: user,
-        isAuthenticated: true,
         isLoading: false,
         error: null,
-        userPermissions: permissions, // <<< GUARDAR PERMISOS
+        userPermissions: permissionNames, // <<< USAR permissionNames RECIBIDO
       });
-      console.log('[AuthStore] Login successful. Permissions stored:', permissions);
+      console.log('[AuthStore] Login successful. User stored:', user, 'Permissions stored:', permissionNames);
     },
+
     loginFailure(error: string) {
       patchState(store, {
         token: null,
@@ -106,10 +117,7 @@ export const AuthStore = signalStore(
         return currentUserPermissions.includes(requiredPermission);
       }
     },
-    // >>> NUEVO MÉTODO PARA OBTENER TODOS LOS PERMISOS DEL USUARIO <<<
-    // (Esto ya lo hace userPermissions(), pero un getter explícito puede ser útil)
-    // getUserPermissions(): string[] {
-    //   return store.userPermissions();
-    // }
+    
+    
   }))
 );
